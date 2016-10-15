@@ -21,7 +21,6 @@ class UnorderedList
 			count += 1
 			current = current.get_next
 		end
-
 		return count
 	end
 
@@ -35,7 +34,6 @@ class UnorderedList
 				current = current.get_next
 			end
 		end
-
 		return found
 	end
 
@@ -43,7 +41,7 @@ class UnorderedList
 		current = @head
 		previous = nil
 		found = false
-		while current != nil not found
+		while !current.nil? and not found
 			if current.get_data == item
 				found = true
 			else
@@ -52,7 +50,7 @@ class UnorderedList
 			end
 		end
 
-		if previous = nil
+		if previous.nil?
 			@head = current.get_next
 		else
 			previous.set_next(current.get_next)
@@ -62,10 +60,9 @@ class UnorderedList
 	def append(item)
 		new_node = Node(item)
 		current = @head
-		while current.get_next != nil
+		while !current.get_next.nil?
 			current = current.get_next
 		end
-
 		current.set_next(new_node)
 	end
 
@@ -94,7 +91,7 @@ class UnorderedList
 		current = @head
 		current_position = 0
 
-		while current != nil
+		while !current.nil?
 			if current.get_data == item
 				return current_position
 			else
@@ -102,7 +99,6 @@ class UnorderedList
 				current_position += 1
 			end
 		end
-
 		return nil
 	end
 
@@ -110,20 +106,12 @@ class UnorderedList
 		current = @head
 		previous = nil
 
-		while current != nil
+		while !current.nil?
 			previous = current
 			current = current.get_next
 		end
 
 		previous.set_next(nil)
 		return current.get_data
-
 	end
-
-
-
-
-
-
-
-
+end
