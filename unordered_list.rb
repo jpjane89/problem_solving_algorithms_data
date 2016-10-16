@@ -1,5 +1,7 @@
 class UnorderedList
 
+	attr_accessor :head
+
 	def initialize
 		@head = nil
 	end
@@ -9,8 +11,8 @@ class UnorderedList
 	end
 
 	def add(item)
-		temp = Node(item)
-		temp.set_next(@head)
+		temp = Node.new(item)
+		temp.next = @head
 		@head = temp
 	end
 
@@ -19,7 +21,7 @@ class UnorderedList
 		count = 0
 		while current != nil
 			count += 1
-			current = current.get_next
+			current = current.next
 		end
 		return count
 	end
@@ -28,10 +30,10 @@ class UnorderedList
 		current = @head
 		found = false
 		while current != nil and not found
-			if current.get_data == item
+			if current.data == item
 				found = true
 			else
-				current = current.get_next
+				current = current.next
 			end
 		end
 		return found
@@ -42,48 +44,69 @@ class UnorderedList
 		previous = nil
 		found = false
 		while !current.nil? and not found
-			if current.get_data == item
+			if current.data == item
 				found = true
 			else
 				previous = current
-				current = current.get_next
+				current = current.next
 			end
 		end
 
 		if previous.nil?
-			@head = current.get_next
+			@head = current.next
 		else
-			previous.set_next(current.get_next)
+			previous.next = current.next
+		end
+	end
+
+	def remove_duplicates
+		already_seen = []
+		current_node = @head
+		previous = nil
+
+		while !current_node.nil?
+			if current_node == @head
+				already_seen.push(current_node.data)
+				previous = current_node
+				current_node = current_node.next
+			elsif !already_seen.include? current_node.data
+				already_seen.push(current_node.data)
+				previous = current_node
+				current_node = current_node.next
+			elsif already_seen.include? current_node.data
+				previous.next = current_node.next
+				current_node = current_node.next
+			end
 		end
 	end
 
 	def append(item)
-		new_node = Node(item)
+		new_node = Node.new(item)
 		current = @head
-		while !current.get_next.nil?
-			current = current.get_next
+		while !current.next.nil?
+			current = current.next
 		end
-		current.set_next(new_node)
+		current.next = new_node
 	end
 
 	def insert(item, position)
-		new_node = Node(item)
+		new_node = Node.new(item)
 		previous = nil
 		current = @head
 		current_position = 0
 
 		while current_position != position
 			previous = current
-			current = current.get_next
+			current = current.next
 			current_position += 1
 		end
 
 		if previous == nil
-			new_node.set_next(current)
+			new_node.next = current
 			@head = new_node
 		else
-			new_node.set_next(current)
-			previous.set_next(new_node)
+			new_node.next = current
+			previous.next = new_node
 		end
 	end
 
@@ -92,10 +115,10 @@ class UnorderedList
 		current_position = 0
 
 		while !current.nil?
-			if current.get_data == item
+			if current.data == item
 				return current_position
 			else
-				current = current.get_next
+				current = current.next
 				current_position += 1
 			end
 		end
@@ -106,12 +129,12 @@ class UnorderedList
 		current = @head
 		previous = nil
 
-		while !current.nil?
+		while !current.next.nil?
 			previous = current
-			current = current.get_next
+			current = current.next
 		end
 
-		previous.set_next(nil)
-		return current.get_data
+		previous.next = nil
+		return current.data
 	end
 end

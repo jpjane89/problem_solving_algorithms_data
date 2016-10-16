@@ -89,12 +89,5 @@ class BinarySearchTree
 			puts "#{current_node.key}"
 		end
 	end
-
-
-
-
-
-
-
 end
 
